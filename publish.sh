@@ -1,11 +1,36 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
-scp deploy.sh raspberry1:./GPIOController
+sendScript() {
+    echo "Sending deploy script"
+    scp deploy.sh raspberry1:./
+    ssh raspberry1 'chmod +x /home/pi/deploy.sh'
+    echo "DONE Sending deploy script"
+}
 
-./gradlew buildDistribution
+publishBinary() {
+    sendScript
+    echo "Compiling binary"
+    ./gradlew buildDistribution
+    echo "DONE Compiling binary"
+    echo "Sending binary"
+    scp build/raspberry-1.0-SNAPSHOT.tgz raspberry1:./raspberryJ-bin
+    echo "DONE Sending binary"
+    echo "Running Deploy"
+    ssh raspberry1 './home/pi/deploy.sh binary'
+    echo "DONE Running Deploy"
+}
 
-scp build/raspberry-1.0-SNAPSHOT.tgz raspberry1:./GPIOController
+publishCode () {
+    sendScript
+    echo "Running Deploy"
+    ssh raspberry1 './home/pi/deploy.sh code'
+    echo "DONE Running Deploy"
+}
 
-ssh raspberry1 'sh /home/pi/GPIOController/deploy.sh'
-
-
+if [ "$1" == "code" ]; then
+    publishCode
+elif [ "$1" == "binary" ]; then
+    publishBinary
+else
+    echo "INVALID OPTION"
+fi

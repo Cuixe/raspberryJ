@@ -1,15 +1,58 @@
 #!/usr/bin/env bash
 
-cd /home/pi/GPIOController
+BIN_PATH="/home/pi/raspberryJ-bin"
+CODE_PATH="/home/pi/raspberryJ"
 
-tar -zxvf raspberry-1.0-SNAPSHOT.tgz
+createDirectories() {
+    echo "Creating Directories"
 
-chmod +x *.sh
+    if [ ! -d "$BIN_PATH" ]; then
+        echo "Creating binary path"
+        mkdir "$BIN_PATH"
+    fi
 
-rm -rf *.tgz
+    if [ ! -d "$BIN_PATH/log" ]; then
+        echo "Creating log path"
+        mkdir "$BIN_PATH/log"
+    fi
 
-rm -rf deploy.sh
+    if [ "$1" == "code" ]; then
+        echo "Creating source path"
+        if [ ! -d "$CODE_PATH" ]; then
+            mkdir "$CODE_PATH"
+            cd "$CODE_PATH"
+            echo "Cloning Source Code"
+            git clone https://github.com/Cuixe/raspberryJ.git
+        fi
+    fi
+}
 
-if [ ! -d "log" ]; then
-  mkdir log
+binaryDeploy() {
+    createDirectories
+    echo "Deploying Binary"
+    cd "$BIN_PATH"
+    tar -zxvf raspberry-1.0-SNAPSHOT.tgz
+    chmod +x *.sh
+    rm -rf *.tgz
+    echo "DONE Deploying Binary"
+}
+
+codeDeploy() {
+    createDirectories
+    cd "$CODE_PATH"
+    echo "Getting last version"
+    git pull
+    echo "Compiling Code"
+    ./gradlew buildDistribution
+    echo "Moving binary"
+    cp  build/raspberry-1.0-SNAPSHOT.tgz "$BIN_PATH"
+    binaryDeploy
+}
+
+if [ "$1" == "code" ]; then
+    codeDeploy
+fi
+
+if [ "$1" == "binary" ]; then
+    binaryDeploy
 fi
