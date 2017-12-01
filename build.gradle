@@ -6,6 +6,9 @@ buildscript {
         maven {
             url "https://plugins.gradle.org/m2/"
         }
+        maven {
+            url "https://oss.sonatype.org/content/groups/public"
+        }
     }
     dependencies {
         classpath "com.github.jengelman.gradle.plugins:shadow:2.0.1"
@@ -18,11 +21,14 @@ apply plugin: 'application'
 
 repositories {
     mavenCentral()
+    maven {
+        url "https://oss.sonatype.org/content/groups/public"
+    }
 }
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
-    compile 'com.pi4j:pi4j-core:1.1'
+    compile 'com.pi4j:pi4j-core:1.2-SNAPSHOT'
 }
 
 task wrapper(type: Wrapper) {
