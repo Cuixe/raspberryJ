@@ -11,7 +11,7 @@ public class Main {
         try {
             final GpioController gpio = GpioFactory.getInstance();
 
-            final GpioPinDigitalOutput pin = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_01, "MyLED", PinState.HIGH);
+            final GpioPinDigitalOutput pin = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_14, "MyLED", PinState.HIGH);
 
             pin.setShutdownOptions(true, PinState.LOW);
 
