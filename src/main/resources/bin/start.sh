@@ -1,8 +1,7 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
-java
 
-HOME="/home/pi/GPIOController"
+HOME="/home/pi/raspberryJ/raspberryJ-bin"
 LIB_PATH="$HOME/lib"
 PROCESS_NAME="GPIO_CONTROLLER"
 DEBUG_PARAMS="-Dlog4j.debug -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=10001"
@@ -14,4 +13,6 @@ echo "MENSAJE: $CLASS_PATH"
 
 #java -cp $CLASS_PATH org.cuixe.raspberry.Main > $LOG_PATH/gpio.out 2> $LOG_PATH/gpio.err &
 
-java -cp /home/pi/GPIOController/lib/raspberry-1.0-SNAPSHOT-all.jar org.cuixe.raspberry.Main
+cd "$HOME"
+
+java -cp lib/raspberry-1.0-SNAPSHOT-all.jar org.cuixe.raspberry.Main
