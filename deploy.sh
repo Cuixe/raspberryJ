@@ -51,8 +51,9 @@ codeDeploy() {
 
 if [ "$1" == "code" ]; then
     codeDeploy
+elif [ "$1" == "binary" ]; then
+    binaryDeploy
+else
+    echo "INVALID OPTION"
 fi
 
-if [ "$1" == "binary" ]; then
-    binaryDeploy
-fi
