@@ -1,0 +1,73 @@
+group 'org.cuixe'
+version '1.0-SNAPSHOT'
+
+buildscript {
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath "com.github.jengelman.gradle.plugins:shadow:2.0.1"
+    }
+}
+
+apply plugin: 'com.github.johnrengelman.shadow'
+apply plugin: 'java'
+apply plugin: 'application'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    compile 'com.pi4j:pi4j-core:1.1'
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.12'
+}
+
+mainClassName = 'org.cuixe.raspberry.Main'
+
+task makeDirStructure() {
+    description = 'Prepara la estructura de archivos, para deploy local o remoto'
+    File distdir = new File("${buildDir}")
+    distdir.mkdir()
+    distdir = new File("${buildDir}/distribution/")
+    distdir.mkdir()
+    distdir = new File("${buildDir}/distribution/lib")
+    distdir.mkdir()
+}
+
+task copyLibsToDistribution(type: Copy) {
+    from configurations.runtime
+    into "${buildDir}/out/lib"
+    include "**.jar"
+}
+
+task copyShells(type: Copy) {
+    from "${buildDir}/resources/main/bin"
+    into "${buildDir}/distribution/"
+    include "**/*"
+}
+
+task copyFatJar(type: Copy) {
+    from "${buildDir}/libs/"
+    into "${buildDir}/distribution/lib"
+    include applicationName + "-" + version + "-all.jar"
+}
+
+task tarDistFile(type: Tar) {
+    from "${buildDir}/distribution/"
+    baseName applicationName
+    compression Compression.GZIP
+    destinationDir "${buildDir}" as File
+}
+
+task buildDistribution(dependsOn:['makeDirStructure', 'build', 'shadowJar']) {
+    copyShells.copy()
+    copyFatJar.copy()
+    tarDistFile.execute()
+}
