@@ -2,6 +2,7 @@
 BASE_PATH="/home/pi/raspberryJ"
 BIN_PATH="$BASE_PATH/raspberryJ-bin"
 CODE_PATH="$BASE_PATH/raspberryJ-code"
+PACKAGE_NAME="raspberry-1.0-SNAPSHOT.tgz"
 
 createDirectories() {
     echo "Creating Directories"
@@ -39,16 +40,19 @@ createSourceCode() {
     fi
 }
 binaryDeploy() {
+    cleanBinaryPath
     createDirectories
+    mv /home/pi/"$PACKAGE_NAME" "$BIN_PATH"
     echo "Deploying Binary"
     cd "$BIN_PATH"
-    tar -zxvf raspberry-1.0-SNAPSHOT.tgz
+    tar -zxvf "$PACKAGE_NAME"
     chmod +x *.sh
     rm -rf *.tgz
     echo "DONE Deploying Binary"
 }
 
 codeDeploy() {
+    cleanBinaryPath
     createDirectories
     createSourceCode
     cd "$CODE_PATH"
@@ -57,7 +61,7 @@ codeDeploy() {
     echo "Compiling Code"
     ./gradlew buildDistribution
     echo "Moving binary"
-    cp  build/raspberry-1.0-SNAPSHOT.tgz "$BIN_PATH"
+    cp  build/"$PACKAGE_NAME" /home/pi
     binaryDeploy
 }
 

@@ -13,7 +13,7 @@ publishBinary() {
     ./gradlew buildDistribution
     echo "DONE Compiling binary"
     echo "Sending binary"
-    scp build/raspberry-1.0-SNAPSHOT.tgz raspberry1:./raspberryJ-bin
+    scp build/raspberry-1.0-SNAPSHOT.tgz raspberry1:./
     echo "DONE Sending binary"
     echo "Running Deploy"
     ssh raspberry1 './deploy.sh binary'
