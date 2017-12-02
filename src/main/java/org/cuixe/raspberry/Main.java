@@ -2,11 +2,15 @@ package org.cuixe.raspberry;
 
 import com.pi4j.io.gpio.*;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
 
 public class Main {
+
+    public static Map<Integer, GpioPinDigitalOutput> pins = new HashMap<>();
 
     public static void main(String[] args) {
         int pin = 0;
@@ -18,15 +22,15 @@ public class Main {
                 pin = lec.nextInt();
                 if (pin == -1) {
                     break;
+                } else if(!pins.containsKey(pin)) {
+                    Pin raspiPin = RaspiPin.getPinByAddress(pin);
+                    GpioPinDigitalOutput gpioPin = gpio.provisionDigitalOutputPin(raspiPin, "Pin" + pin, PinState.HIGH);
+                    pins.put(pin, gpioPin);
                 }
             } while (pin <= 0);
-
-            Pin raspiPin = RaspiPin.getPinByAddress(pin);
-            final GpioPinDigitalOutput gpioPin = gpio.provisionDigitalOutputPin(raspiPin, "Pin" + pin, PinState.HIGH);
-            opeartePin(gpioPin);
+            opeartePin(pins.get(pin));
         }
         gpio.shutdown();
-
     }
 
     private static void opeartePin(GpioPinDigitalOutput pin) {
