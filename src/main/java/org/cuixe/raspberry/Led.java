@@ -7,7 +7,6 @@ import java.util.Map;
 
 public class Led {
     private int number;
-    private Pin pin;
     private GpioPinDigitalOutput gpioPIN;
 
     private static Map<Integer, Pin> ledPin = new HashMap<>();
@@ -38,5 +37,9 @@ public class Led {
 
     public void turnOff(){
         gpioPIN.low();
+    }
+
+    public void toggle() {
+        gpioPIN.toggle();
     }
 }

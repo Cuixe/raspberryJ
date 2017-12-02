@@ -68,10 +68,11 @@ public class Main {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-
             }
         } catch (InvalidPinException ex) {
             System.out.println(ex.getMessage());
+        } finally {
+            GPIOPort.shutdown();
         }
     }
 
