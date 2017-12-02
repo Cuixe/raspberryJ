@@ -14,6 +14,7 @@ public class Main {
     private static final GpioController gpio = GpioFactory.getInstance();
 
     public static void main(String[] args) {
+        initialize();
         int pin = 0;
         while (pin != -1) {
             Scanner lec = new Scanner(System.in);
@@ -35,14 +36,19 @@ public class Main {
         gpio.shutdown();
     }
 
-    private static void operateAll() {
+    private static void initialize() {
+        System.out.println("Inicializando PINS");
         Pin[] allPins = RaspiPin.allPins();
         for (int i = 0; i< allPins.length; i++) {
             Pin pin = allPins[i];
             GpioPinDigitalOutput gpioPin = gpio.provisionDigitalOutputPin(pin, pin.getName(), PinState.HIGH);
             pins.put(pin.getAddress(), gpioPin);
-            opeartePin(gpioPin, 1);
         }
+        System.out.println("PINS Inicializados");
+    }
+
+    private static void operateAll() {
+        pins.values().forEach((pin) -> opeartePin(pin,1));
     }
 
     private static void opeartePin(GpioPinDigitalOutput pin, int timeOut) {

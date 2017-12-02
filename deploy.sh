@@ -16,11 +16,6 @@ createDirectories() {
     if [ ! -d "$BIN_PATH" ]; then
         echo "Creating binary path"
         mkdir "$BIN_PATH"
-    else
-        echo "Cleaning binary path"
-        rm -rf "$BIN_PATH"
-        echo "Creating binary path"
-        mkdir "$BIN_PATH"
     fi
 
     if [ ! -d "$BIN_PATH/log" ]; then
@@ -29,6 +24,13 @@ createDirectories() {
     fi
 }
 
+cleanBinaryPath() {
+    echo "Cleaning binary path"
+    rm -rf "$BIN_PATH"
+    echo "Creating binary path"
+    mkdir "$BIN_PATH"
+
+}
 createSourceCode() {
     if [ ! -d "$CODE_PATH" ]; then
         echo "Cloning Source Code"
