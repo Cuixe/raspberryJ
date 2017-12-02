@@ -25,13 +25,10 @@ public class Main {
                     break;
                 } else if(pin == 500) {
                     operateAll();
-                } else if(!pins.containsKey(pin)) {
-                    Pin raspiPin = RaspiPin.getPinByAddress(pin);
-                    GpioPinDigitalOutput gpioPin = gpio.provisionDigitalOutputPin(raspiPin, "Pin" + pin, PinState.HIGH);
-                    pins.put(pin, gpioPin);
+                } else {
+                    opeartePin(pins.get(pin), 2);
                 }
             } while (pin <= 0);
-            opeartePin(pins.get(pin), 2);
         }
         gpio.shutdown();
     }
@@ -43,6 +40,7 @@ public class Main {
             Pin pin = allPins[i];
             GpioPinDigitalOutput gpioPin = gpio.provisionDigitalOutputPin(pin, pin.getName(), PinState.HIGH);
             pins.put(pin.getAddress(), gpioPin);
+            System.out.println("PIN: addres:" + pin.getAddress() + " name:" +pin.getName() + " provider:" + pin.getProvider());
         }
         System.out.println("PINS Inicializados");
     }
