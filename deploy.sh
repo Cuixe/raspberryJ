@@ -17,6 +17,7 @@ createDirectories() {
         echo "Creating binary path"
         mkdir "$BIN_PATH"
     else
+        echo "Cleaning binary path"
         rm -rf "$BIN_PATH"
         echo "Creating binary path"
         mkdir "$BIN_PATH"
