@@ -11,7 +11,6 @@ public class Main {
 
     private static Map<Integer, GpioPinDigitalOutput> pins = new HashMap<>();
     private static GpioController gpio = null;
-    private static List<Integer> forbiddenPins = new ArrayList<>();
 
     private static Map<Integer, Pin> ledPin = new HashMap<>();
     static {
@@ -77,7 +76,7 @@ public class Main {
             else if (mode == 2)
                 turnOff(pin);
             else if (mode == 3) {
-                operatePin(pin, 1);
+                operatePin(pin);
             }
         } catch (InvalidPinException ex) {
             System.out.println(ex.getMessage());
@@ -87,12 +86,9 @@ public class Main {
 
     private static void initialize() {
         gpio = GpioFactory.getInstance();
-        forbiddenPins.add(20);
         System.out.println("Inicializando PINS");
-        ledPin.entrySet().forEach((entry) -> {
-            entry.getKey();
-            Pin pin = entry.getValue();
-            GpioPinDigitalOutput gpioPin = gpio.provisionDigitalOutputPin(pin, "LED_"+entry.getKey(), PinState.HIGH);
+        ledPin.forEach((key, pin) -> {
+            GpioPinDigitalOutput gpioPin = gpio.provisionDigitalOutputPin(pin, "LED_"+ key, PinState.HIGH);
             gpioPin.setShutdownOptions(true, PinState.LOW);
             pins.put(pin.getAddress(), gpioPin);
             System.out.println("PIN: addres:" + pin.getAddress() + " name:" +pin.getName() + " provider:" + pin.getProvider());
@@ -110,24 +106,19 @@ public class Main {
         gpioPin.low();
     }
 
-    private static void operatePin(Pin pin, int timeOut) {
+    private static void operatePin(Pin pin) {
         GpioPinDigitalOutput gpioPin = pins.get(pin.getAddress());
         try {
             System.out.println("TURNING OFF");
             gpioPin.low();
-            TimeUnit.SECONDS.sleep(timeOut);
+            TimeUnit.SECONDS.sleep(1);
             System.out.println("TURNING ON");
             gpioPin.high();
-            TimeUnit.SECONDS.sleep(timeOut);
+            TimeUnit.SECONDS.sleep(1);
             gpioPin.low();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
 
-    private static void validatePin(int pin) {
-        if(forbiddenPins.contains(pin)) {
-            throw new InvalidPinException(pin);
-        }
-    }
 }
