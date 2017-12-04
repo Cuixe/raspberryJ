@@ -13,33 +13,26 @@ public class Main {
     private static Map<Integer, Led> leds = new HashMap<>();
 
     public static void main(String[] args) {
-
-        int option;
         int mode;
         int led = 0;
         Scanner lec = new Scanner(System.in);
         initialize();
         while(true) {
-            System.out.println("Enter operation: 1=all, 2=pin, 0=exit");
-            option = lec.nextInt();
-            if (option == 0) {
+            System.out.println("Enter LED: (0 = todos, -1=exit)");
+            led = lec.nextInt();
+            if (led == -1) {
                 break;
-            } else if(option == 2) {
-                System.out.println("Enter LED: 0=exit");
-                led = lec.nextInt();
-                if (led == 0) {
-                    break;
-                }
-            } else if (option == 1) {
-                led = -1;
             }
-            System.out.println("Enter mode: 1=turnOn, 2=turnOff, 3 turnOn-turnOff, 0=exit");
+
+            System.out.println("Enter mode: 1=turnOn, 2=turnOff, 3 turnOn-turnOff, -1=exit");
             mode = lec.nextInt();
-            if (mode == 0) {
+            if (mode == -1) {
                 break;
             }
             work(led, mode);
         }
+        GPIOPort.shutdown();
+
     }
 
     private static void work(int led, int mode) {
@@ -71,8 +64,6 @@ public class Main {
             }
         } catch (InvalidPinException ex) {
             System.out.println(ex.getMessage());
-        } finally {
-            GPIOPort.shutdown();
         }
     }
 
