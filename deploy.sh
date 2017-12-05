@@ -28,6 +28,7 @@ createDirectories() {
 cleanBinaryPath() {
     echo "Cleaning binary path"
     rm -rf "$BIN_PATH"
+    sleep 1
     echo "Creating binary path"
     mkdir "$BIN_PATH"
 

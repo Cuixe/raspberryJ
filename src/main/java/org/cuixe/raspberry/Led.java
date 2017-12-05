@@ -31,6 +31,14 @@ public class Led {
         gpioPIN.setShutdownOptions(true, PinState.LOW);
     }
 
+    public int getNumber() {
+        return number;
+    }
+
+    public Pin getPin() {
+        return ledPin.get(getNumber());
+    }
+
     public void turnOn(){
         gpioPIN.high();
     }

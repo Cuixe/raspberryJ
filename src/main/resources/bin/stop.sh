@@ -15,7 +15,7 @@ then
         exit 1
 fi
 
-echo "STOPING" >> $LOG_PATH/fixtron.out
+echo "STOPING" >> $LOG_PATH/raspberry.log
 echo "Finishing process with id: [$PID]"
-kill -9 $PID > /dev/null 2>&1
+sudo kill -9 $PID > /dev/null 2>&1
 

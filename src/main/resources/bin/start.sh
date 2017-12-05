@@ -8,8 +8,8 @@ JMX_PARAMS="-Dcom.sun.management.jmxremote.port=10002 -Dcom.sun.management.jmxre
 CLASS_PATH="lib/raspberry-1.0-SNAPSHOT-all.jar"
 LOG_PATH="$HOME/log"
 
-echo "MENSAJE: $CLASS_PATH"
-
 cd "$HOME"
 
-java -cp lib/raspberry-1.0-SNAPSHOT-all.jar org.cuixe.raspberry.Main
+echo "STARTING "
+
+sudo java -DGPIO_CONTROLLER -cp lib/raspberry-1.0-SNAPSHOT-all.jar org.cuixe.raspberry.Main > log/raspberry.log &

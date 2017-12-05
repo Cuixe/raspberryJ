@@ -10,6 +10,8 @@ sendScript() {
 publishBinary() {
     sendScript
     echo "Compiling binary"
+    ./gradlew clean build
+    echo "assamble binary"
     ./gradlew buildDistribution
     echo "DONE Compiling binary"
     echo "Sending binary"
