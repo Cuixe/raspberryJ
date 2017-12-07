@@ -1,4 +1,6 @@
-package org.cuixe.raspberry;
+package org.cuixe.raspberry.tasks;
+
+import org.cuixe.raspberry.leds.Led;
 
 public class Task implements Runnable {
 

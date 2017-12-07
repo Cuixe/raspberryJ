@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-BASE_PATH="/home/pi/raspberryJ"
-BIN_PATH="$BASE_PATH/raspberryJ-bin"
+BASE_PATH="/home/pi"
+BIN_PATH="$BASE_PATH/raspberryJ"
 CODE_PATH="$BASE_PATH/raspberryJ-code"
 PACKAGE_NAME="raspberry-1.0-SNAPSHOT.tgz"
 

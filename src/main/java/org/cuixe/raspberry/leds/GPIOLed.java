@@ -1,11 +1,11 @@
-package org.cuixe.raspberry;
+package org.cuixe.raspberry.leds;
 
 import com.pi4j.io.gpio.*;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class Led {
+public class GPIOLed implements Led{
     private int number;
     private GpioPinDigitalOutput gpioPIN;
 
@@ -25,10 +25,11 @@ public class Led {
         ledPin.put(12, RaspiPin.GPIO_29);
     }
 
-    public Led(int number) {
+    public GPIOLed(int number) {
         this.number = number;
         gpioPIN = GPIOPort.getPin(ledPin.get(number), "LED_" + number);
-        gpioPIN.setShutdownOptions(true, PinState.LOW);
+        gpioPIN.setShutdownOptions(true, PinState.HIGH);
+        turnOff();
     }
 
     public int getNumber() {
@@ -40,11 +41,11 @@ public class Led {
     }
 
     public void turnOn(){
-        gpioPIN.high();
+        gpioPIN.low();
     }
 
     public void turnOff(){
-        gpioPIN.low();
+        gpioPIN.high();
     }
 
     public void toggle() {

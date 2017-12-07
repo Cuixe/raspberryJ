@@ -1,6 +1,6 @@
 #!/bin/bash
 
-HOME="/home/pi/raspberryJ/raspberryJ-bin"
+HOME="/home/pi/raspberryJ"
 LIB_PATH="$HOME/lib"
 PROCESS_NAME="GPIO_CONTROLLER"
 DEBUG_PARAMS="-Dlog4j.debug -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=10001"
@@ -10,6 +10,10 @@ LOG_PATH="$HOME/log"
 
 cd "$HOME"
 
-echo "STARTING "
-
-sudo java -DGPIO_CONTROLLER -cp lib/raspberry-1.0-SNAPSHOT-all.jar org.cuixe.raspberry.Main > log/raspberry.log &
+if [ ! -z "$1" ]; then
+    echo "STARTING CLI"
+    sudo java -DCLI -cp lib/raspberry-1.0-SNAPSHOT-all.jar org.cuixe.raspberry.Main2
+else
+    echo "STARTING GPIO_CONTROLLER"
+    sudo java -DGPIO_CONTROLLER -cp lib/raspberry-1.0-SNAPSHOT-all.jar org.cuixe.raspberry.Main $1 $2 > log/raspberry.log &
+fi
