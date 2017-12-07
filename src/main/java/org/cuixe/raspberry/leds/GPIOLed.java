@@ -5,9 +5,9 @@ import com.pi4j.io.gpio.*;
 import java.util.HashMap;
 import java.util.Map;
 
-public class GPIOLed implements Led{
-    private int number;
+public class GPIOLed extends AbstractStatusLed implements Led{
     private GpioPinDigitalOutput gpioPIN;
+    private State state;
 
     private static Map<Integer, Pin> ledPin = new HashMap<>();
     static {
@@ -26,29 +26,28 @@ public class GPIOLed implements Led{
     }
 
     public GPIOLed(int number) {
-        this.number = number;
+        super(number);
         gpioPIN = GPIOPort.getPin(ledPin.get(number), "LED_" + number);
         gpioPIN.setShutdownOptions(true, PinState.HIGH);
         turnOff();
-    }
-
-    public int getNumber() {
-        return number;
     }
 
     public Pin getPin() {
         return ledPin.get(getNumber());
     }
 
-    public void turnOn(){
+    public void turnOn() {
+        super.turnOn();
         gpioPIN.low();
     }
 
-    public void turnOff(){
+    public void turnOff() {
+        super.turnOff();
         gpioPIN.high();
     }
 
     public void toggle() {
+        super.toggle();
         gpioPIN.toggle();
     }
 }

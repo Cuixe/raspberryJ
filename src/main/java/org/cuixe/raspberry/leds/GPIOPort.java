@@ -10,10 +10,6 @@ public class GPIOPort {
         return gpio.provisionDigitalOutputPin(pin, name, PinState.LOW);
     }
 
-    static GpioPinDigitalOutput getPin(Pin pin) {
-        return getPin(pin, pin.getName());
-    }
-
     public static void shutdown() {
         gpio.shutdown();
     }

@@ -3,6 +3,7 @@ package org.cuixe.raspberry;
 import org.cuixe.raspberry.exceptions.InvalidPinException;
 import org.cuixe.raspberry.leds.GPIOLed;
 import org.cuixe.raspberry.leds.GPIOPort;
+import org.cuixe.raspberry.leds.Led;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +13,7 @@ import java.util.concurrent.TimeUnit;
 
 public class Main2 {
 
-    private static Map<Integer, GPIOLed> leds = new HashMap<>();
+    private static Map<Integer, Led> leds = new HashMap<>();
 
     public static void main(String[] args) {
         int mode;
@@ -48,19 +49,19 @@ public class Main2 {
 
     private static void executeMode(int ledNumber, int mode) {
         System.out.println("Operating GPIOLed: " + ledNumber + " Mode " + mode);
-        GPIOLed GPIOLed = leds.get(ledNumber);
+        Led led = leds.get(ledNumber);
         try {
             if (mode == 1)
-                GPIOLed.turnOn();
+                led.turnOn();
             else if (mode == 2)
-                GPIOLed.turnOff();
+                led.turnOff();
             else if (mode == 3) {
                 try {
-                    GPIOLed.turnOff();
+                    led.turnOff();
                     TimeUnit.SECONDS.sleep(1);
-                    GPIOLed.turnOn();
+                    led.turnOn();
                     TimeUnit.SECONDS.sleep(1);
-                    GPIOLed.turnOff();
+                    led.turnOff();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

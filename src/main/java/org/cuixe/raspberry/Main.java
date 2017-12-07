@@ -1,7 +1,8 @@
 package org.cuixe.raspberry;
 
 import org.cuixe.raspberry.leds.GPIOLed;
-import org.cuixe.raspberry.tasks.TasksManager;
+import org.cuixe.raspberry.tasks.LedTasksManager;
+import org.cuixe.raspberry.tasks.TaskManager;
 import org.cuixe.raspberry.utils.TimeUtils;
 
 import java.util.HashMap;
@@ -13,6 +14,10 @@ public class Main {
     private static Map<Integer, GPIOLed> leds = new HashMap<>();
 
     public static void main(String[] args) {
+
+        TaskManager taskManager =new LedTasksManager();
+
+
         System.out.println("ARGUMENTOS; ");
         for(int i = 0; i<args.length; i++) {
             System.out.println(args[i]);
@@ -41,15 +46,15 @@ public class Main {
         if(turnOffTimeDelay < 0) {
             turnOffTimeDelay = 1;
         }
-        TasksManager.scheduleTurnOnLed(leds.get(9), turnOnTimeDelay);
-        TasksManager.scheduleTurnOnLed(leds.get(10), turnOnTimeDelay);
-        TasksManager.scheduleTurnOnLed(leds.get(11), turnOnTimeDelay);
-        TasksManager.scheduleTurnOnLed(leds.get(12), turnOnTimeDelay);
+        taskManager.scheduleTurnOnLed(leds.get(9), turnOnTimeDelay);
+        taskManager.scheduleTurnOnLed(leds.get(10), turnOnTimeDelay);
+        taskManager.scheduleTurnOnLed(leds.get(11), turnOnTimeDelay);
+        taskManager.scheduleTurnOnLed(leds.get(12), turnOnTimeDelay);
 
-        TasksManager.scheduleTurnOffLed(leds.get(9), turnOffTimeDelay);
-        TasksManager.scheduleTurnOffLed(leds.get(10), turnOffTimeDelay);
-        TasksManager.scheduleTurnOffLed(leds.get(11), turnOffTimeDelay);
-        TasksManager.scheduleTurnOffLed(leds.get(12), turnOffTimeDelay);
+        taskManager.scheduleTurnOffLed(leds.get(9), turnOffTimeDelay);
+        taskManager.scheduleTurnOffLed(leds.get(10), turnOffTimeDelay);
+        taskManager.scheduleTurnOffLed(leds.get(11), turnOffTimeDelay);
+        taskManager.scheduleTurnOffLed(leds.get(12), turnOffTimeDelay);
     }
 
     private static void initialize() {
