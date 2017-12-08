@@ -4,6 +4,7 @@ import org.cuixe.raspberry.exceptions.InvalidPinException;
 import org.cuixe.raspberry.leds.GPIOLed;
 import org.cuixe.raspberry.leds.GPIOPort;
 import org.cuixe.raspberry.leds.Led;
+import org.cuixe.raspberry.leds.LedsMapper;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,13 +14,13 @@ import java.util.concurrent.TimeUnit;
 
 public class Main2 {
 
-    private static Map<Integer, Led> leds = new HashMap<>();
+    private static LedsMapper ledsMapper = new LedsMapper();
 
     public static void main(String[] args) {
         int mode;
         int led = 0;
         Scanner lec = new Scanner(System.in);
-        initialize();
+        ledsMapper.initialize();
         while(true) {
             System.out.println("Enter LED: (0 = todos, -1=exit)");
             led = lec.nextInt();
@@ -43,13 +44,15 @@ public class Main2 {
             executeMode(led, mode);
         } else {
             System.out.println("Operating all leds");
-            leds.keySet().forEach((tmp) -> executeMode(tmp, mode));
+            for(int i = 1; i<= 12; i++) {
+                executeMode(i, mode);
+            }
         }
     }
 
     private static void executeMode(int ledNumber, int mode) {
         System.out.println("Operating GPIOLed: " + ledNumber + " Mode " + mode);
-        Led led = leds.get(ledNumber);
+        Led led = ledsMapper.getLed(ledNumber);
         try {
             if (mode == 1)
                 led.turnOn();
@@ -69,14 +72,6 @@ public class Main2 {
         } catch (InvalidPinException ex) {
             System.out.println(ex.getMessage());
         }
-    }
-
-    private static void initialize() {
-        System.out.println("Inicializando Leds");
-        for(int i = 1;i<=12;i++) {
-            leds.put(i, new GPIOLed(i));
-        }
-        System.out.println("PINS Inicializados");
     }
 
 }

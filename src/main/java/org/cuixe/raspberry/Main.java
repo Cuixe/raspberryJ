@@ -1,6 +1,7 @@
 package org.cuixe.raspberry;
 
 import org.cuixe.raspberry.leds.GPIOLed;
+import org.cuixe.raspberry.leds.LedsMapper;
 import org.cuixe.raspberry.tasks.LedTasksManager;
 import org.cuixe.raspberry.tasks.TaskManager;
 import org.cuixe.raspberry.utils.TimeUtils;
@@ -11,13 +12,12 @@ import java.util.Properties;
 
 public class Main {
 
-    private static Map<Integer, GPIOLed> leds = new HashMap<>();
+    private static LedsMapper ledsMapper = new LedsMapper();
 
     public static void main(String[] args) {
 
         TaskManager taskManager =new LedTasksManager();
-
-
+        
         System.out.println("ARGUMENTOS; ");
         for(int i = 0; i<args.length; i++) {
             System.out.println(args[i]);
@@ -25,7 +25,7 @@ public class Main {
         String initTime;
         String endTime;
         Properties properties = transformToProperties(args);
-        initialize();
+        ledsMapper.initialize();
         if (!properties.containsKey("TURN_ON_TIME")) {
             initTime = "18:00:00";
         } else {
@@ -46,26 +46,15 @@ public class Main {
         if(turnOffTimeDelay < 0) {
             turnOffTimeDelay = 1;
         }
-        taskManager.scheduleTurnOnLed(leds.get(9), turnOnTimeDelay);
-        taskManager.scheduleTurnOnLed(leds.get(10), turnOnTimeDelay);
-        taskManager.scheduleTurnOnLed(leds.get(11), turnOnTimeDelay);
-        taskManager.scheduleTurnOnLed(leds.get(12), turnOnTimeDelay);
+        taskManager.scheduleTurnOnLed(ledsMapper.getLed(9), turnOnTimeDelay);
+        taskManager.scheduleTurnOnLed(ledsMapper.getLed(10), turnOnTimeDelay);
+        taskManager.scheduleTurnOnLed(ledsMapper.getLed(11), turnOnTimeDelay);
+        taskManager.scheduleTurnOnLed(ledsMapper.getLed(12), turnOnTimeDelay);
 
-        taskManager.scheduleTurnOffLed(leds.get(9), turnOffTimeDelay);
-        taskManager.scheduleTurnOffLed(leds.get(10), turnOffTimeDelay);
-        taskManager.scheduleTurnOffLed(leds.get(11), turnOffTimeDelay);
-        taskManager.scheduleTurnOffLed(leds.get(12), turnOffTimeDelay);
-    }
-
-    private static void initialize() {
-        System.out.println("INICIALIZANDO LEDS");
-
-        for(int i =1;i<=12;i++) {
-            GPIOLed GPIOLed = new GPIOLed(i);
-            leds.put(i, GPIOLed);
-            System.out.println("GPIOLed: " + GPIOLed.getNumber() + " Pin: " + GPIOLed.getPin().getAddress());
-        }
-        System.out.println("PINS Inicializados");
+        taskManager.scheduleTurnOffLed(ledsMapper.getLed(9), turnOffTimeDelay);
+        taskManager.scheduleTurnOffLed(ledsMapper.getLed(10), turnOffTimeDelay);
+        taskManager.scheduleTurnOffLed(ledsMapper.getLed(11), turnOffTimeDelay);
+        taskManager.scheduleTurnOffLed(ledsMapper.getLed(12), turnOffTimeDelay);
     }
 
     private static Properties transformToProperties(String[] args) {
