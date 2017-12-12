@@ -35,8 +35,6 @@ public class Main2 {
             }
             work(led, mode);
         }
-        GPIOPort.shutdown();
-
     }
 
     private static void work(int led, int mode) {
