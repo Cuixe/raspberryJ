@@ -1,18 +1,12 @@
 package org.cuixe.raspberry;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.cuixe.raspberry.leds.GPIOLed;
 import org.cuixe.raspberry.leds.LedsMapper;
 import org.cuixe.raspberry.tasks.LedTasksManager;
 import org.cuixe.raspberry.tasks.TaskManager;
 import org.cuixe.raspberry.utils.Notifier;
 import org.cuixe.raspberry.utils.TimeUtils;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Properties;
-import java.util.concurrent.TimeUnit;
 
 public class Main {
 
