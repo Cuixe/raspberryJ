@@ -1,13 +1,11 @@
 package org.cuixe.raspberry;
 
-import org.cuixe.raspberry.leds.GPIOLed;
 import org.cuixe.raspberry.leds.LedsMapper;
 import org.cuixe.raspberry.tasks.LedTasksManager;
 import org.cuixe.raspberry.tasks.TaskManager;
+import org.cuixe.raspberry.utils.Notifier;
 import org.cuixe.raspberry.utils.TimeUtils;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Properties;
 
 public class Main {
@@ -17,10 +15,11 @@ public class Main {
     public static void main(String[] args) {
 
         TaskManager taskManager =new LedTasksManager();
-        
-        System.out.println("ARGUMENTOS; ");
+        long delay = 60*60*24;
+
+        Notifier.info("ARGUMENTOS");
         for(int i = 0; i<args.length; i++) {
-            System.out.println(args[i]);
+            Notifier.info(args[i]);
         }
         String initTime;
         String endTime;
@@ -46,15 +45,15 @@ public class Main {
         if(turnOffTimeDelay < 0) {
             turnOffTimeDelay = 1;
         }
-        taskManager.scheduleTurnOnLed(ledsMapper.getLed(9), turnOnTimeDelay);
-        taskManager.scheduleTurnOnLed(ledsMapper.getLed(10), turnOnTimeDelay);
-        taskManager.scheduleTurnOnLed(ledsMapper.getLed(11), turnOnTimeDelay);
-        taskManager.scheduleTurnOnLed(ledsMapper.getLed(12), turnOnTimeDelay);
+        taskManager.schedulePeriodTurnOnLed(ledsMapper.getLed(9), turnOnTimeDelay, delay);
+        taskManager.schedulePeriodTurnOnLed(ledsMapper.getLed(10), turnOnTimeDelay, delay);
+        taskManager.schedulePeriodTurnOnLed(ledsMapper.getLed(11), turnOnTimeDelay, delay);
+        taskManager.schedulePeriodTurnOnLed(ledsMapper.getLed(12), turnOnTimeDelay, delay);
 
-        taskManager.scheduleTurnOffLed(ledsMapper.getLed(9), turnOffTimeDelay);
-        taskManager.scheduleTurnOffLed(ledsMapper.getLed(10), turnOffTimeDelay);
-        taskManager.scheduleTurnOffLed(ledsMapper.getLed(11), turnOffTimeDelay);
-        taskManager.scheduleTurnOffLed(ledsMapper.getLed(12), turnOffTimeDelay);
+        taskManager.schedulePeriodTurnOffLed(ledsMapper.getLed(9), turnOffTimeDelay, delay);
+        taskManager.schedulePeriodTurnOffLed(ledsMapper.getLed(10), turnOffTimeDelay, delay);
+        taskManager.schedulePeriodTurnOffLed(ledsMapper.getLed(11), turnOffTimeDelay, delay);
+        taskManager.schedulePeriodTurnOffLed(ledsMapper.getLed(12), turnOffTimeDelay, delay);
     }
 
     private static Properties transformToProperties(String[] args) {
@@ -68,7 +67,7 @@ public class Main {
         return properties;
     }
 
-    private static long getRemainingTime(String time) {
+    public static long getRemainingTime(String time) {
         String[] tokens = time.split(":");
         int hours = Integer.valueOf(tokens[0]);
         int days = hours/24;

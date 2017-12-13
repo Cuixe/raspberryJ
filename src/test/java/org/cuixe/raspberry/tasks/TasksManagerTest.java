@@ -1,11 +1,16 @@
 package org.cuixe.raspberry.tasks;
 
+import org.cuixe.raspberry.Main;
 import org.cuixe.raspberry.leds.FooLed;
 import org.cuixe.raspberry.leds.Led;
+import org.cuixe.raspberry.utils.TimeUtils;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 public class TasksManagerTest {
@@ -76,6 +81,13 @@ public class TasksManagerTest {
         led.turnOff();
         TimeUnit.MILLISECONDS.sleep(200);
         Assert.assertTrue(led.getState() == Led.State.TURN_ON);
+    }
+
+    @Test
+    public void init() {
+        taskManager.setDefaultTimeUnit(TimeUnit.SECONDS);
+        long turnOnTimeDelay = Main.getRemainingTime("18:00:00");
+        taskManager.schedulePeriodTurnOnLed(led, turnOnTimeDelay, 100);
     }
 
 }

@@ -1,6 +1,8 @@
 package org.cuixe.raspberry.tasks;
 
 import org.cuixe.raspberry.leds.Led;
+import org.cuixe.raspberry.utils.Notifier;
+import org.cuixe.raspberry.utils.TimeUtils;
 
 public class Task implements Runnable {
 
@@ -14,22 +16,22 @@ public class Task implements Runnable {
 
     @Override
     public void run() {
-        System.out.println("OPERATION EN:" + System.currentTimeMillis());
+        Notifier.info("OPERATION EN:" + System.currentTimeMillis());
         switch (operation) {
             case 1:
-                System.out.println("ACTIVANDO LED: " + led.getNumber());
+                Notifier.info(TimeUtils.getNowTime() +" ACTIVANDO LED: " + led.getNumber());
                 led.turnOn();
                 break;
             case 2:
-                System.out.println("DESACTIVANDO LED: " + led.getNumber());
+                Notifier.info(TimeUtils.getNowTime() +" DESACTIVANDO LED: " + led.getNumber());
                 led.turnOff();
                 break;
             case 3:
-                System.out.println("CAMBIANDO LED: " + led.getNumber());
+                Notifier.info(TimeUtils.getNowTime() +" CAMBIANDO LED: " + led.getNumber());
                 led.toggle();
                 break;
             default:
-                System.out.println("OPERACION INVALIDA: " + led.getNumber());
+                Notifier.info(TimeUtils.getNowTime() +" OPERACION INVALIDA: " + led.getNumber());
                     break;
         }
     }
