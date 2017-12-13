@@ -13,10 +13,13 @@ cd "$HOME"
 if [ ! -z "$1" ]; then
     if [ "$1" == "CLI" ]; then
         echo "STARTING CLI"
-        sudo java -DCLI -cp lib/raspberry-1.0-SNAPSHOT-all.jar org.cuixe.raspberry.Main2
+        sudo java -DCLI -cp lib/raspberry-1.0-SNAPSHOT-all.jar org.cuixe.raspberry.Main
+    elif [ "$1" == "NVO" ]; then
+        echo "STARTING SCHEDULED"
+        sudo java -DCLI -cp lib/raspberry-1.0-SNAPSHOT-all.jar org.cuixe.raspberry.Main3 $2 $3 > log/raspberry.log &
     else
         echo "STARTING GPIO_CONTROLLER"
-        sudo java -DGPIO_CONTROLLER -cp lib/raspberry-1.0-SNAPSHOT-all.jar org.cuixe.raspberry.Main $1 $2 > log/raspberry.log &
+        sudo java -DGPIO_CONTROLLER -cp lib/raspberry-1.0-SNAPSHOT-all.jar org.cuixe.raspberry.Main $2 $3 > log/raspberry.log &
     fi
 else
     echo "STARTING GPIO_CONTROLLER"

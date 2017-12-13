@@ -27,12 +27,12 @@ createDirectories() {
 
 cleanBinaryPath() {
     echo "Cleaning binary path"
-    rm -rf "$BIN_PATH"
+    rm -rf "$BIN_PATH/*.sh"
+    rm -rf "$BIN_PATH/lib"
+    rm -rf "$BIN_PATH/log"
     sleep 1
-    echo "Creating binary path"
-    mkdir "$BIN_PATH"
-
 }
+
 createSourceCode() {
     if [ ! -d "$CODE_PATH" ]; then
         echo "Cloning Source Code"

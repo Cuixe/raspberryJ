@@ -6,6 +6,10 @@ HOME='/home/pi/raspberryJ'
 LOG_PATH="$HOME/log"
 KILLED=0
 
+if [ -z "$1" ]; then
+    sudo rm -rf logs
+fi
+
 echo "Shutting down $PROCESS_NAME"
 
 PID=`ps -fea | grep $PROCESS_NAME | grep -v grep | awk '{print $2}'`

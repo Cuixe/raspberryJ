@@ -4,6 +4,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalUnit;
 import java.util.concurrent.TimeUnit;
 
@@ -45,5 +46,34 @@ public class TimeUtils {
         LocalDateTime localDate = LocalDateTime.now();
         return localDate.getYear()+ "/" + localDate.getMonth() + "/" + localDate.getDayOfMonth()+" " +
                 localDate.getHour()+ ":" + localDate.getMinute() + ":" + localDate.getSecond();
+    }
+
+    public static TemporalUnit cast(TimeUnit timeUnit) {
+        switch (timeUnit) {
+            case MILLISECONDS:
+                return ChronoUnit.MILLIS;
+            case DAYS:
+                return ChronoUnit.DAYS;
+            case MINUTES:
+                return ChronoUnit.MINUTES;
+            case HOURS:
+                return ChronoUnit.HOURS;
+            case SECONDS:
+                return ChronoUnit.SECONDS;
+            case MICROSECONDS:
+                return ChronoUnit.MICROS;
+            default:
+                return null;
+        }
+    }
+
+    public static long getRemainingTime(String time) {
+        String[] tokens = time.split(":");
+        int hours = Integer.valueOf(tokens[0]);
+        int days = hours/24;
+        hours = hours % 24;
+        int minutes = Integer.valueOf(tokens[1]);
+        int seconds = Integer.valueOf(tokens[2]);
+        return getRemainingTime(days, hours, minutes, seconds);
     }
 }

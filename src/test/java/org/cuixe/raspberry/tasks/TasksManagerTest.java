@@ -86,7 +86,7 @@ public class TasksManagerTest {
     @Test
     public void init() {
         taskManager.setDefaultTimeUnit(TimeUnit.SECONDS);
-        long turnOnTimeDelay = Main.getRemainingTime("18:00:00");
+        long turnOnTimeDelay = TimeUtils.getRemainingTime("18:00:00");
         taskManager.schedulePeriodTurnOnLed(led, turnOnTimeDelay, 100);
     }
 
