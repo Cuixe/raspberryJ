@@ -7,18 +7,24 @@ DEBUG_PARAMS="-Dlog4j.debug -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspe
 JMX_PARAMS="-Dcom.sun.management.jmxremote.port=10002 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname=localhost"
 CLASS_PATH="lib/raspberry-1.0-SNAPSHOT-all.jar"
 LOG_PATH="$HOME/log"
+JMX_PORT="10000"
+JMX_IP="192.168.100.150"
+JMX_PARAMS="-Dcom.sun.management.jmxremote.port=$JMX_PORT -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname=$JMX_IP"
 
 cd "$HOME"
 
 if [ ! -z "$1" ]; then
     if [ "$1" == "CLI" ]; then
         echo "STARTING CLI"
-        sudo java -DCLI -cp lib/raspberry-1.0-SNAPSHOT-all.jar org.cuixe.raspberry.Main2
+        sudo java -DCLI $JMX_PARAMS -cp lib/raspberry-1.0-SNAPSHOT-all.jar org.cuixe.raspberry.Main
+    elif [ "$1" == "NVO" ]; then
+        echo "STARTING SCHEDULED"
+        sudo java -DCLI $JMX_PARAMS -cp lib/raspberry-1.0-SNAPSHOT-all.jar org.cuixe.raspberry.Main3 $2 $3 > log/raspberry.log &
     else
         echo "STARTING GPIO_CONTROLLER"
-        sudo java -DGPIO_CONTROLLER -cp lib/raspberry-1.0-SNAPSHOT-all.jar org.cuixe.raspberry.Main $1 $2 > log/raspberry.log &
+        sudo java -DGPIO_CONTROLLER $JMX_PARAMS -cp lib/raspberry-1.0-SNAPSHOT-all.jar org.cuixe.raspberry.Main $2 $3 > log/raspberry.log &
     fi
 else
     echo "STARTING GPIO_CONTROLLER"
-    sudo java -DGPIO_CONTROLLER -cp lib/raspberry-1.0-SNAPSHOT-all.jar org.cuixe.raspberry.Main $1 $2 > log/raspberry.log &
+    sudo java -DGPIO_CONTROLLER $JMX_PARAMS -cp lib/raspberry-1.0-SNAPSHOT-all.jar org.cuixe.raspberry.Main $1 $2 > log/raspberry.log &
 fi

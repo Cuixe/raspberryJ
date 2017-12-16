@@ -1,6 +1,6 @@
 #!/bin/bash
 
-HOST="raspberry2"
+HOST="$1"
 
 sendScript() {
     echo "Sending deploy script"
@@ -31,10 +31,4 @@ publishCode () {
     echo "DONE Running Deploy"
 }
 
-if [ "$1" == "code" ]; then
-    publishCode
-elif [ "$1" == "binary" ]; then
-    publishBinary
-else
-    echo "INVALID OPTION"
-fi
+publishBinary

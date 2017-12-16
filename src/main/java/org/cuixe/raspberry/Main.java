@@ -7,6 +7,7 @@ import org.cuixe.raspberry.utils.Notifier;
 import org.cuixe.raspberry.utils.TimeUtils;
 
 import java.util.Properties;
+import java.util.concurrent.TimeUnit;
 
 public class Main {
 
@@ -37,8 +38,8 @@ public class Main {
         }
 
 
-        long turnOnTimeDelay = getRemainingTime(initTime);
-        long turnOffTimeDelay = getRemainingTime(endTime);
+        long turnOnTimeDelay = TimeUtils.getRemainingTime(initTime);
+        long turnOffTimeDelay = TimeUtils.getRemainingTime(endTime);
         if(turnOnTimeDelay < 0) {
             turnOnTimeDelay = 0;
         }
@@ -56,7 +57,7 @@ public class Main {
         taskManager.schedulePeriodTurnOffLed(ledsMapper.getLed(12), turnOffTimeDelay, delay);
     }
 
-    private static Properties transformToProperties(String[] args) {
+    public static Properties transformToProperties(String[] args) {
         Properties properties = new Properties();
         for(int i = 0 ; i< args.length; i++) {
             if(args[i].contains("=")) {
@@ -67,13 +68,4 @@ public class Main {
         return properties;
     }
 
-    public static long getRemainingTime(String time) {
-        String[] tokens = time.split(":");
-        int hours = Integer.valueOf(tokens[0]);
-        int days = hours/24;
-        hours = hours % 24;
-        int minutes = Integer.valueOf(tokens[1]);
-        int seconds = Integer.valueOf(tokens[2]);
-        return TimeUtils.getRemainingTime(days, hours, minutes, seconds);
-    }
 }
