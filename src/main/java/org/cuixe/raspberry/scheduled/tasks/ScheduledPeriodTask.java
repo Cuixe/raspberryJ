@@ -19,7 +19,6 @@ public abstract class ScheduledPeriodTask extends ScheduledTask {
         LocalDateTime localDateTime = LocalDateTime.now();
         localDateTime = localDateTime.plus(getDelay(), TimeUtils.cast(getTimeUnit()));
         nextExecution = format.format(localDateTime);
-
     }
 
     @Override
