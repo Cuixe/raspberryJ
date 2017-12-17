@@ -10,8 +10,9 @@ public class ScheduledPeriodTurnOnTask extends ScheduledPeriodTask {
     private Led led;
 
     public ScheduledPeriodTurnOnTask(String executionTime, long period, TimeUnit timeUnit, Led led) {
-        super(TaskIdGenerator.getIdTask(), executionTime, period, timeUnit);
+        super(executionTime, period, timeUnit);
         this.led = led;
+        this.registerMBean();
     }
 
     @Override

@@ -13,7 +13,7 @@ public class SchedulerManager {
     private final String ADD_TASK_MESSAGE = "AGREGANDO TAREA ";
 
     public void schedulTask(ScheduledPeriodTask task) {
-        if(task.isShouldbeExecuted()) {
+        if(task.isShouldBeExecuted()) {
             task.execute();
         }
         scheduler.scheduleAtFixedRate(task, task.getDelay(), task.getPeriod(),task.getTimeUnit());
@@ -22,7 +22,7 @@ public class SchedulerManager {
 
     public void schedulTask(ScheduledTask task) {
         Notifier.info(ADD_TASK_MESSAGE + task.getDescription());
-        if(task.isShouldbeExecuted()) {
+        if(task.isShouldBeExecuted()) {
             task.execute();
         } else {
             scheduler.schedule(task, task.getDelay(), task.getTimeUnit());

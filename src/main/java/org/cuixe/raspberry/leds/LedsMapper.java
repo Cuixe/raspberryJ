@@ -1,7 +1,7 @@
 package org.cuixe.raspberry.leds;
 
-import org.cuixe.raspberry.jmx.JmxLedMBean;
-import org.cuixe.raspberry.jmx.JmxLed;
+import org.cuixe.raspberry.jmx.led.JmxLedMBean;
+import org.cuixe.raspberry.jmx.led.JmxLed;
 import org.cuixe.raspberry.jmx.MBeanRegister;
 import org.cuixe.raspberry.utils.Notifier;
 
@@ -15,7 +15,7 @@ public class LedsMapper {
 
     public void initialize () {
         Notifier.info("INICIALIZANDO LEDS");
-        for(int i =1;i<=12;i++) {
+        for(int i = 1; i <= 12; i++) {
             Led led = new GPIOLed(i);
             leds.put(i, led);
             Notifier.info("Inicializando Led: " + led.getNumber());

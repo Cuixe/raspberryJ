@@ -1,4 +1,4 @@
-package org.cuixe.raspberry.jmx;
+package org.cuixe.raspberry.jmx.led;
 
 import org.cuixe.raspberry.leds.Led;
 

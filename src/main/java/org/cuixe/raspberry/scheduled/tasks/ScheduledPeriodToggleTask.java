@@ -11,8 +11,9 @@ public class ScheduledPeriodToggleTask extends ScheduledPeriodTask {
     private Led led;
 
     public ScheduledPeriodToggleTask(String executionTime, long period, TimeUnit timeUnit, Led led) {
-        super(TaskIdGenerator.getIdTask(), executionTime, period, timeUnit);
+        super(executionTime, period, timeUnit);
         this.led = led;
+        this.registerMBean();
     }
 
     @Override

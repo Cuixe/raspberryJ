@@ -1,11 +1,12 @@
 package org.cuixe.raspberry;
 
 import org.cuixe.raspberry.scheduled.Initializer;
+import org.cuixe.raspberry.utils.ArgumentUtils;
 import org.cuixe.raspberry.utils.Notifier;
 
 import java.util.Properties;
 
-public class Main3 {
+public class ScheduledMain {
 
     public static void main(String args []) {
 
@@ -15,7 +16,7 @@ public class Main3 {
         }
         String initTime;
         String endTime;
-        Properties properties = Main.transformToProperties(args);
+        Properties properties = ArgumentUtils.transformToProperties(args);
         if (!properties.containsKey("TURN_ON_TIME")) {
             initTime = "18:00:00";
         } else {
@@ -28,6 +29,5 @@ public class Main3 {
         }
 
         new Initializer().inicialize(initTime, endTime);
-
     }
 }

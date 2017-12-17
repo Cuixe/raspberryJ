@@ -1,5 +1,8 @@
 package org.cuixe.raspberry.scheduled.tasks;
 
+import org.cuixe.raspberry.jmx.MBeanRegister;
+import org.cuixe.raspberry.jmx.scheduled.JmxScheduledPeriodTask;
+import org.cuixe.raspberry.jmx.scheduled.JmxScheduledTask;
 import org.cuixe.raspberry.utils.Notifier;
 import org.cuixe.raspberry.utils.TimeUtils;
 
@@ -13,12 +16,18 @@ public abstract class ScheduledPeriodTask extends ScheduledTask {
     private DateTimeFormatter format = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
     private String nextExecution;
 
-    public ScheduledPeriodTask(long idTask, String executionTime, long period, TimeUnit timeUnit) {
-        super(idTask, executionTime, timeUnit);
+    private static final String MBEAN_NAME = "org.cuixe.scheduledPeriodTask:name=";
+
+    public ScheduledPeriodTask(String executionTime, long period, TimeUnit timeUnit) {
+        super(executionTime, timeUnit);
         this.period = period;
         LocalDateTime localDateTime = LocalDateTime.now();
         localDateTime = localDateTime.plus(getDelay(), TimeUtils.cast(getTimeUnit()));
         nextExecution = format.format(localDateTime);
+    }
+
+    public void registerMBean() {
+        MBeanRegister.registerMBean(new JmxScheduledPeriodTask(this), MBEAN_NAME + getDescription());
     }
 
     @Override
