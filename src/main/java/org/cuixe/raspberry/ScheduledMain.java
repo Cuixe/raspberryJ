@@ -29,5 +29,7 @@ public class ScheduledMain {
         }
 
         new Initializer().inicialize(initTime, endTime);
+
+        System.out.println("RASPBERRY_J STARTED");
     }
 }

@@ -1,28 +1,32 @@
-#!/bin/bash
+#!/bin/sh
 
-HOME="/home/pi/raspberryJ"
-LIB_PATH="$HOME/lib"
-PROCESS_NAME="GPIO_CONTROLLER"
-DEBUG_PARAMS="-Dlog4j.debug -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=10001"
-LOG_PATH="$HOME/log"
-JMX_PORT="10000"
-JMX_IP="192.168.100.150"
-JMX_PARAMS="-Dcom.sun.management.jmxremote.port=$JMX_PORT -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname=$JMX_IP"
-LIB="-cp lib/raspberry-1.0-SNAPSHOT-all.jar"
-MAIN_CLASS="org.cuixe.raspberry.Principal"
+PROCESS_NAME="RASPBERRY_J"
+APP_HOME="/home/pi/raspberryJ"
+SUCCESS_PHRASE="RASPBERRY_J STARTED"
+LOG_FILE="$APP_HOME/$PROCESS_NAME.out"
 
-
-cd "$HOME"
-
-if [ ! -z "$1" ]; then
-    if [ "$1" == "CLI" ]; then
-        echo "STARTING CLI"
-        sudo java -DCLI $LIB $MAIN_CLASS CLI
-    else
-        echo "STARTING GPIO_CONTROLLER"
-        sudo java -DGPIO_CONTROLLER $JMX_PARAMS $LIB $MAIN_CLASS $1 $2 > log/raspberry.log &
-    fi
-else
-    echo "STARTING GPIO_CONTROLLER"
-    sudo java -DGPIO_CONTROLLER $JMX_PARAMS $LIB $MAIN_CLASS $1 $2 > log/raspberry.log &
+if [ -f $APP_HOME/bin/setenv.sh ]; then
+    . $APP_HOME/bin/setenv.sh
 fi
+
+START_COMMAND="sudo java -D$PROCESS_NAME $DEBUG_PARAMS $JMX_PARAMS -cp $CLASSPATH $MAIN_CLASS"
+
+echo "*******************************"
+echo "Starting $PROCESS_NAME process"
+echo "*******************************"
+
+cd $APP_HOME
+
+$START_COMMAND > $LOG_FILE 2>&1 &
+echo "$!" > PID.out
+sh $APP_HOME/bin/checklog.sh $LOG_FILE $SUCCESS_PHRASE
+
+RETVAL=$?
+if [ $RETVAL -eq 0 ]; then
+    echo "$PROCESS_NAME is ready"
+else
+    echo "$PROCESS_NAME is not available"
+    rm PID.out
+fi
+
+exit $RETVAL

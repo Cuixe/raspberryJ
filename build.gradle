@@ -6,16 +6,9 @@ buildscript {
         maven {
             url "https://plugins.gradle.org/m2/"
         }
-        maven {
-            url "https://oss.sonatype.org/content/groups/public"
-        }
-    }
-    dependencies {
-        classpath "com.github.jengelman.gradle.plugins:shadow:2.0.1"
     }
 }
 
-apply plugin: 'com.github.johnrengelman.shadow'
 apply plugin: 'java'
 apply plugin: 'application'
 
@@ -38,32 +31,47 @@ task wrapper(type: Wrapper) {
 
 mainClassName = 'org.cuixe.raspberry.Main'
 
-task makeDirStructure() {
+task makeDirStructure()  << {
     description = 'Prepara la estructura de archivos, para deploy local o remoto'
     File distdir = new File("${buildDir}")
     distdir.mkdir()
     distdir = new File("${buildDir}/distribution/")
     distdir.mkdir()
-    distdir = new File("${buildDir}/distribution/lib")
+    distdir = new File("${buildDir}/distribution/libs")
+    distdir.mkdir()
+    distdir = new File("${buildDir}/distribution/etc")
+    distdir.mkdir()
+    distdir = new File("${buildDir}/distribution/bin")
     distdir.mkdir()
 }
 
 task copyLibsToDistribution(type: Copy) {
     from configurations.runtime
-    into "${buildDir}/out/lib"
+    into "${buildDir}/distribution/libs"
+    include "**.jar"
+}
+
+task copyLibToDistribution(type: Copy) {
+    from "${buildDir}/libs"
+    into "${buildDir}/distribution/libs"
     include "**.jar"
 }
 
 task copyShells(type: Copy) {
     from "${buildDir}/resources/main/bin"
-    into "${buildDir}/distribution/"
+    into "${buildDir}/distribution/bin"
+    include "**/*"
+}
+task copyConfigFiles(type: Copy) {
+    from "${buildDir}/resources/main/etc"
+    into "${buildDir}/distribution/etc"
     include "**/*"
 }
 
-task copyFatJar(type: Copy) {
-    from "${buildDir}/libs/"
-    into "${buildDir}/distribution/lib"
-    include applicationName + "-" + version + "-all.jar"
+task copyLaunch(type: Copy) {
+    from "${buildDir}/resources/main/launch"
+    into "${buildDir}/distribution"
+    include "**/*"
 }
 
 task tarDistFile(type: Tar) {
@@ -73,8 +81,11 @@ task tarDistFile(type: Tar) {
     destinationDir "${buildDir}" as File
 }
 
-task buildDistribution(dependsOn:['makeDirStructure', 'build', 'shadowJar']) {
+task buildDistribution(dependsOn:['makeDirStructure', 'build']) << {
     copyShells.copy()
-    copyFatJar.copy()
+    copyLaunch.copy()
+    copyConfigFiles.copy()
+    copyLibsToDistribution.copy()
+    copyLibToDistribution.copy()
     tarDistFile.execute()
 }

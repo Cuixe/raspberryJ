@@ -1,25 +1,23 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
+PROCESS_NAME="RASPBERRY_J"
+APP_HOME="/home/pi/raspberryJ"
+LOG_FILE="${PROCESS_NAME}.out"
 
-PROCESS_NAME="GPIO_CONTROLLER"
-HOME='/home/pi/raspberryJ'
-LOG_PATH="$HOME/log"
-KILLED=0
+cd $APP_HOME
 
-if [ -z "$1" ]; then
-    sudo rm -rf logs
+PID=""
+if [ -e PID.out ]; then
+    PID=`cat PID.out`
+else
+    PID=`ps -fea | grep $PROCESS_NAME | grep -v grep | awk '{print $2}'`
 fi
-
-echo "Shutting down $PROCESS_NAME"
-
-PID=`ps -fea | grep $PROCESS_NAME | grep -v grep | awk '{print $2}'`
-if [ -z "$PID" ]
-then
+if [ -z "$PID" ]; then
     echo "Process with name [$PROCESS_NAME] was not found."
     exit 1
 fi
-
-echo "STOPING" >> $LOG_PATH/raspberry.log
-echo "Finishing process with id: [$PID]"
-sudo kill -9 $PID > /dev/null 2>&1
-
+echo "SHUTING DOWN $PROCESS_NAME" > $LOG_FILE
+echo "************************************"
+echo "STOPING $PROCESS_NAME WITH ID: $PID"
+echo "************************************"
+kill -9 $PID > /dev/null 2>&1

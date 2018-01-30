@@ -1,35 +1,37 @@
 #!/usr/bin/env bash
-BASE_PATH="/home/pi"
-BIN_PATH="$BASE_PATH/raspberryJ"
-CODE_PATH="$BASE_PATH/raspberryJ-code"
+USER_HOME="/home/pi"
+APP_HOME="$USER_HOME/raspberryJ"
+BIN_PATH="$APP_HOME/bin"
+CODE_PATH="$USER_HOME/raspberryJ-code"
 PACKAGE_NAME="raspberry-1.0-SNAPSHOT.tgz"
 
 createDirectories() {
     echo "Creating Directories"
 
-    if [ ! -d "$BASE_PATH" ]; then
+    if [ ! -d "$USER_HOME" ]; then
         echo "Creating base path"
-        mkdir "$BASE_PATH"
+        mkdir "$USER_HOME"
     fi
 
-    cd "$BASE_PATH"
+    cd "$USER_HOME"
 
-    if [ ! -d "$BIN_PATH" ]; then
+    if [ ! -d "$APP_HOME" ]; then
         echo "Creating binary path"
-        mkdir "$BIN_PATH"
+        mkdir "$APP_HOME"
     fi
 
-    if [ ! -d "$BIN_PATH/log" ]; then
+    if [ ! -d "$APP_HOME/log" ]; then
         echo "Creating log path"
-        mkdir "$BIN_PATH/log"
+        mkdir "$APP_HOME/log"
     fi
 }
 
 cleanBinaryPath() {
     echo "Cleaning binary path"
-    rm -rf "$BIN_PATH/*.sh"
-    rm -rf "$BIN_PATH/lib"
-    rm -rf "$BIN_PATH/log"
+    rm -rf "$APP_HOME/bin"
+    rm -rf "$APP_HOME/*.sh"
+    rm -rf "$APP_HOME/lib"
+    rm -rf "$APP_HOME/log"
     sleep 1
 }
 
@@ -43,11 +45,12 @@ createSourceCode() {
 binaryDeploy() {
     cleanBinaryPath
     createDirectories
-    mv /home/pi/"$PACKAGE_NAME" "$BIN_PATH"
+    mv /home/pi/"$PACKAGE_NAME" "$APP_HOME"
     echo "Deploying Binary"
-    cd "$BIN_PATH"
+    cd "$APP_HOME"
     tar -zxvf "$PACKAGE_NAME"
     chmod +x *.sh
+    chmod +x bin/*.sh
     rm -rf *.tgz
     echo "DONE Deploying Binary"
 }
