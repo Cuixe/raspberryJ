@@ -1,2 +1,4 @@
 rootProject.name = 'raspberry'
+include 'client'
+include 'server'
 
