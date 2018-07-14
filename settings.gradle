@@ -1,4 +1,5 @@
-rootProject.name = 'raspberry'
+rootProject.name = 'raspberryJ'
 include 'client'
 include 'server'
+include 'api'
 

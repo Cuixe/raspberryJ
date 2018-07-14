@@ -10,12 +10,12 @@ buildscript {
             url "https://oss.sonatype.org/content/groups/public"
         }
     }
-    dependencies {
+    /*dependencies {
         classpath "com.github.jengelman.gradle.plugins:shadow:2.0.1"
-    }
+    }*/
 }
 
-apply plugin: 'com.github.johnrengelman.shadow'
+//apply plugin: 'com.github.johnrengelman.shadow'
 apply plugin: 'java'
 apply plugin: 'application'
 
@@ -34,6 +34,15 @@ dependencies {
 
 task wrapper(type: Wrapper) {
     gradleVersion = '2.12'
+}
+
+allprojects {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        compile group: 'com.google.protobuf', name: 'protobuf-java', version: '3.6.0'
+    }
 }
 
 mainClassName = 'org.cuixe.raspberry.Main'
