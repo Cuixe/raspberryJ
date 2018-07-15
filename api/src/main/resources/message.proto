@@ -1,0 +1,53 @@
+syntax = "proto3";
+package org.raspberryJ.api;
+
+message Transport {
+    oneof message {
+        RegisterRequest registerRequest = 1;
+        RegisterResponse registerResponse = 2;
+        PingRequest pingRequest = 3;
+        PingResponse pingResponse = 4;
+        PinRequest pinRequest = 5;
+        PinResponse pinResponse = 6;
+    }
+}
+
+message RegisterRequest {
+    string raspberryId = 1;
+}
+
+message RegisterResponse {
+    int64 clientId = 1;
+    enum Status {
+        ACCEPTED = 0;
+        UN_KNOWN_DEVICE = 1;
+        ALREADY_REGISTERED = 2;
+    }
+    Status status = 2;
+    string errorMessage = 3;
+    RegisterRequest registerRequest = 4;
+}
+
+message PingRequest {
+    int64 clientId = 1;
+    int32 attempt = 2;
+    int64 requestTime = 3;
+}
+
+message PingResponse {
+    int64 clientId = 1;
+    int64 responseTime = 2;
+    PingRequest pingRequest = 3;
+}
+
+message PinRequest {
+    int64 clientId = 1;
+    int32 pindNumber = 2;
+    bool turnOn = 3;
+}
+
+message PinResponse {
+    int64 clientId = 1;
+    int32 status = 2;
+    PinRequest PinRequest = 3;
+}

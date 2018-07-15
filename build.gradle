@@ -1,90 +1,36 @@
-group 'org.cuixe'
-version '1.0-SNAPSHOT'
 
-buildscript {
+allprojects {
+
+    apply plugin: 'java'
+    apply plugin: 'application'
+
+    group 'org.cuixe'
+    version '0.0.1'
+
+    sourceCompatibility = 1.8
+
     repositories {
-        maven {
-            url "https://plugins.gradle.org/m2/"
-        }
-        maven {
-            url "https://oss.sonatype.org/content/groups/public"
-        }
+        mavenCentral()
     }
-    /*dependencies {
-        classpath "com.github.jengelman.gradle.plugins:shadow:2.0.1"
-    }*/
-}
 
-//apply plugin: 'com.github.johnrengelman.shadow'
-apply plugin: 'java'
-apply plugin: 'application'
+    dependencies {
+        compile group: 'com.google.protobuf', name: 'protobuf-java', version: '3.6.0'
+        compile 'org.apache.logging.log4j:log4j-core:+'
+        testCompile group: 'junit', name: 'junit', version: '4.12'
+        testCompile project (':api')
+        testCompile project (':client')
+        testCompile project (':server')
+    }
 
-repositories {
-    mavenCentral()
-    maven {
-        url "https://oss.sonatype.org/content/groups/public"
+    task wrapper(type: Wrapper) {
+        gradleVersion = '2.12'
     }
 }
 
-dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12'
-}
-
-task wrapper(type: Wrapper) {
-    gradleVersion = '2.12'
-}
-
-mainClassName = 'org.cuixe.raspberry.Main'
-
-task makeDirStructure() {
-    description = 'Prepara la estructura de archivos, para deploy local o remoto'
-    File distdir = new File("${buildDir}")
-    distdir.mkdir()
-    distdir = new File("${buildDir}/distribution/")
-    distdir.mkdir()
-    distdir = new File("${buildDir}/distribution/lib")
-    distdir.mkdir()
-}
-
-task copyLibsToDistribution(type: Copy) {
-    from configurations.runtime
-    into "${buildDir}/out/lib"
-    include "**.jar"
-}
-
-task copyShells(type: Copy) {
-    from "${buildDir}/resources/main/bin"
-    into "${buildDir}/distribution/"
-    include "**/*"
-}
-
-task copyFatJar(type: Copy) {
-    from "${buildDir}/libs/"
-    into "${buildDir}/distribution/lib"
-    include applicationName + "-" + version + "-all.jar"
-}
-
-task tarDistFile(type: Tar) {
-    from "${buildDir}/distribution/"
-    baseName applicationName
-    compression Compression.GZIP
-    destinationDir "${buildDir}" as File
-}
-
-task buildDistribution(dependsOn:['makeDirStructure', 'build', 'shadowJar']) {
-    copyShells.copy()
-    copyFatJar.copy()
-    tarDistFile.execute()
-}
 
 task buildProtoBuf(type: Exec) {
-    workingDir "${project.path}/api/src/main/resources"
-    args '${project.path}/api/src/main/resources'
+    def arguments = [project.projectDir.toString(), ""]
+    workingDir "api/src/main/resources"
     commandLine "./protobuf.sh"
-    standardOutput = new ByteArrayOutputStream()
-
-    //extension method stopTomcat.output() can be used to obtain the output:
-    ext.output = {
-        return standardOutput.toString()
-    }
+    args arguments
 }

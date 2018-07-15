@@ -1,17 +1,18 @@
 #!/bin/bash
 
-PROTO_PATH="${1}/src/main/resources"
-JAVA_OUT="${1}/src/main/java"
+MODULE_PATH="${1}/api"
+PROTO_PATH="${1}/api/src/main/resources"
+JAVA_OUT="${1}/api/src/main/java"
+FILE='message.proto'
 
-echo "EXECUTING PROTOCOL BUFFERS"
-echo "PROTO_PAHT: ${PROTO_PATH}"
-echo "JAVA_OUT: ${JAVA_OUT}"
+echo "BUILDING ${FILE} FILE"
+cd "${PROTO_PATH}"
 
-if [ ! -f "${PROTO_PATH}/raspberryJ.proto" ]; then
-    echo "FILE NOT FOUND"
+if [ ! -f "${FILE}" ]; then
+    echo "FILE ${FILE} NOT FOUND"
     exit 1
 fi
 
-cd "${PROTO_PATH}"
-
-protoc --java_out=${1}/src/main/java raspberryJ.proto
+protoc --java_out=${JAVA_OUT} ${FILE}
+echo "BUILD ${FILE} DONE"
+exit 0
