@@ -4,8 +4,6 @@ USER="$1"
 HOST="$2"
 SSH="$1@$2"
 
-echo $SSH
-
 sendScript() {
     echo "Sending deploy script"
     scp deploy.sh $SSH:./
