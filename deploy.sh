@@ -4,6 +4,8 @@ BIN_PATH="$BASE_PATH/raspberryJ"
 CODE_PATH="$BASE_PATH/raspberryJ-code"
 PACKAGE_NAME="raspberry-1.0-SNAPSHOT.tgz"
 
+HOST=$2
+
 createDirectories() {
     echo "Creating Directories"
 
@@ -49,6 +51,7 @@ binaryDeploy() {
     tar -zxvf "$PACKAGE_NAME"
     chmod +x *.sh
     rm -rf *.tgz
+    sed -i -e "s/@HOST@/${HOST}/g" start.sh
     echo "DONE Deploying Binary"
 }
 
