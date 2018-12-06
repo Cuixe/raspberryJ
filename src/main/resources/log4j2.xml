@@ -4,7 +4,7 @@
         <Console name="Console" target="SYSTEM_OUT">
             <PatternLayout pattern="%d{dd/MM/yyyy HH:mm:ss.SSS} %-5level - %msg%n"/>
         </Console>
-        <File name="File" fileName="logs/app.log">
+        <File name="File" fileName="log/app.log">
             <PatternLayout>
                 <Pattern>%d %p - %m%n</Pattern>
             </PatternLayout>
