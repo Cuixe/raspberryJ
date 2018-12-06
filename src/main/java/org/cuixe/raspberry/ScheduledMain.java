@@ -23,11 +23,13 @@ public class ScheduledMain {
             initTime = properties.getProperty("TURN_ON_TIME");
         }
         if (!properties.containsKey("TURN_OFF_TIME")) {
-            endTime = "25:00:00";
+            endTime = "01:00:00";
         } else {
             endTime = properties.getProperty("TURN_OFF_TIME");
         }
+        Initializer initializer = new Initializer();
 
-        new Initializer().inicialize(initTime, endTime);
+        initializer.registerTurnOffEvents(endTime);
+        initializer.registerTurnOnEvents(initTime);
     }
 }

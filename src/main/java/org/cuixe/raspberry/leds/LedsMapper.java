@@ -12,25 +12,31 @@ public class LedsMapper {
 
     private Map<Integer, Led> leds = new HashMap<>();
     private static final String MBEAN_NAME = "org.cuixe.leds:name=";
+    private boolean inizialized = false;
 
-    public void initialize () {
-        Notifier.info("INICIALIZANDO LEDS");
-        for(int i = 1; i <= 12; i++) {
-            Led led = new GPIOLed(i);
-            leds.put(i, led);
-            Notifier.info("Inicializando Led: " + led.getNumber());
-            try {
-                JmxLedMBean jmxLedMBean = new JmxLed(led);
-                MBeanRegister.registerMBean(jmxLedMBean, MBEAN_NAME + jmxLedMBean.getLedName());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        Notifier.info("LEDS Inicializados");
-
+    public LedsMapper() {
+        initialize();
     }
 
+    public void initialize () {
+        if (!inizialized) {
+            Notifier.info("INICIALIZANDO LEDS");
+            for (int i = 1; i <= 12; i++) {
+                Led led = new GPIOLed(i);
+                leds.put(i, led);
+                Notifier.info("Inicializando Led: " + led.getNumber());
+                try {
+                    JmxLedMBean jmxLedMBean = new JmxLed(led);
+                    MBeanRegister.registerMBean(jmxLedMBean, MBEAN_NAME + jmxLedMBean.getLedName());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            Notifier.info("LEDS Inicializados");
+            inizialized = true;
+        }
 
+    }
 
     public Led getLed(int ledNumber) {
         return leds.get(ledNumber);
