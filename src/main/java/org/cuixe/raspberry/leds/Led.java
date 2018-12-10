@@ -4,7 +4,7 @@ public interface Led {
 
     enum State {
         TURN_ON, TURN_OFF
-    };
+    }
 
     int getNumber();
 
